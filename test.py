@@ -14,4 +14,5 @@ g.add_edge(1, 4, 3)
 g.add_edge(0, 4, 1)
 g.add_edge(3, 5, 3)
 
-print(g.print_graph())
+g.show("graph.html")
+g.least_spanning_tree().show("least_spanning_tree.html")

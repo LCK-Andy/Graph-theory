@@ -102,10 +102,21 @@ class GraphList:
         visited = set()
 
         pass
-    
+
     def least_spanning_tree(self):
         # Kuruskal's algorithm
-        pass
+        # source: https://www.youtube.com/watch?v=_UH0H4r7N7E&t=25s
+        result = GraphList(self.V_count, directed=self.directed)
+        edges = self.get_edge_list()
+        edges.sort(key=lambda x: x[2])
+        visited = set()
+        for edge in edges:
+            if edge[0] not in visited or edge[1] not in visited:
+                result.add_edge(From=edge[0], To=edge[1], weight=edge[2])
+                visited.add(edge[0])
+                visited.add(edge[1])
+                
+        return result
 
     @staticmethod
     def is_graphical(sequence: list, mutiple_edges=False):
