@@ -149,13 +149,15 @@ class GraphList:
 
         def union(parent, rank, x, y):
 
-            """ 
+            """
             the "union" function of the union-find algorithm
+
+            source: https://www.youtube.com/watch?v=ayW5B2W9hfo
             """
             root_x = find(parent, x)
             root_y = find(parent, y)
 
-            # When two sets are merged, the root of the tree with a smaller 
+            # When two sets are merged, the root of the tree with a smaller
             # rank is made a child of the root of the tree with a larger rank.
             if rank[root_x] < rank[root_y]:
                 parent[root_x] = root_y
@@ -180,6 +182,8 @@ class GraphList:
             if root_u != root_v:
                 result.add_edge(From=u, To=v, weight=w)
                 union(parent, rank, root_u, root_v)
+                
+            # after the tree is found, root_u and root_v will be the same
 
         return result
 
