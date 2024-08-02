@@ -103,19 +103,84 @@ class GraphList:
 
         pass
 
-    def least_spanning_tree(self):
+    def get_weight_sum(self):
+        # return the sum of all edge weights in the graph
+        weight_sum = 0
+        for i in range(self.V_count):
+            for edge in self.graph[i]:
+                weight_sum += edge[1]
+        if not self.directed:
+            weight_sum /= 2
+
+        return weight_sum
+
+    def optimal_spanning_tree(self, maximize=False):
         # Kuruskal's algorithm
         # source: https://www.youtube.com/watch?v=_UH0H4r7N7E&t=25s
         result = GraphList(self.V_count, directed=self.directed)
         edges = self.get_edge_list()
-        edges.sort(key=lambda x: x[2])
-        visited = set()
+        edges.sort(key=lambda x: x[2], reverse=maximize)
+
+        # problem:
+        # because it only checked if the nodes are visited or not,
+        # this implementation may result in separate trees
+        #
+        # visited = set()
+        # for edge in edges:
+        #     if edge[0] not in visited or edge[1] not in visited:
+        #         result.add_edge(From=edge[0], To=edge[1], weight=edge[2])
+        #         visited.add(edge[0])
+        #         visited.add(edge[1])
+        #
+        # suggestion:
+        # use union-find algorithm to connect the separateed trees
+
+        def find(parent, i):
+            """
+            the "find" function of the union-find algorithm
+
+            source: https://www.youtube.com/watch?v=ayW5B2W9hfo
+            """
+
+            if parent[i] == i:
+                return i
+            else:
+                return find(parent, parent[i])
+
+        def union(parent, rank, x, y):
+
+            """ 
+            the "union" function of the union-find algorithm
+            """
+            root_x = find(parent, x)
+            root_y = find(parent, y)
+
+            # When two sets are merged, the root of the tree with a smaller 
+            # rank is made a child of the root of the tree with a larger rank.
+            if rank[root_x] < rank[root_y]:
+                parent[root_x] = root_y
+            elif rank[root_x] > rank[root_y]:
+                parent[root_y] = root_x
+            else:
+                parent[root_y] = root_x
+                rank[root_x] += 1
+
+        parent = [] # used to keep track of the parent of each node
+        rank = [] # used to keep track of the depth of each subtree rooted at each node
+
+        for node in range(self.V_count):
+            parent.append(node) # iitially, each node is its own parent
+            rank.append(0) # initally , each subtree has a depth of 0
+
         for edge in edges:
-            if edge[0] not in visited or edge[1] not in visited:
-                result.add_edge(From=edge[0], To=edge[1], weight=edge[2])
-                visited.add(edge[0])
-                visited.add(edge[1])
-                
+            u, v, w = edge
+            root_u = find(parent, u)
+            root_v = find(parent, v)
+
+            if root_u != root_v:
+                result.add_edge(From=u, To=v, weight=w)
+                union(parent, rank, root_u, root_v)
+
         return result
 
     @staticmethod
