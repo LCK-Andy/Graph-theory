@@ -16,8 +16,7 @@ g.add_edge(2, 4, 2)
 g.add_edge(3, 6, 9)
 
 
-# g.show("graph.html")
-g.optimal_spanning_tree(maximize=True).show()
-print(g.optimal_spanning_tree(maximize=True).get_weight_sum())
-
-
+g.show("graph.html")
+g.optimal_spanning_tree(maximize=False).show("mst.html")
+g.optimal_spanning_tree(maximize=False).print_graph()
+print(g.optimal_spanning_tree(maximize=False).get_weight_sum())

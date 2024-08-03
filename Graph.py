@@ -5,55 +5,76 @@ class GraphList:
     create a graph using adjacency list
     """
 
-    def __init__(self, n: int, directed=False):
-        self.V_count = n
+    def __init__(self, n, directed=False):
+        if isinstance(n, list):
+            self.V_count = len(n)
+            self.V = n
+        elif isinstance(n, int):
+            self.V_count = n
+            self.V = [i for i in range(n)]
+        else:
+            raise ValueError("Input should be a list or an integer")
+
         self.E_count = 0
         self.directed = directed
-        self.graph = [[] for _ in range(n)]
+        self.graph = {v: [] for v in self.V}
 
-    def add_edge(self, From: int, To: int, weight=1):
+    def add_edge(self, From, To, weight=1):
+        if From not in self.V or To not in self.V:
+            raise ValueError("Both vertices must be in the graph")
+
         self.graph[From].append((To, weight))
         self.E_count += 1
+
         if not self.directed:
             self.graph[To].append((From, weight))
 
-    def remove_edge(self, From: int, To: int, weight=None):
+    def remove_edge(self, From, To, weight=None):
+        if From not in self.V or To not in self.V:
+            raise ValueError("Both vertices must be in the graph")
+
         if weight is None:
             # Simple graph case
+            original_length = len(self.graph[From])
             self.graph[From] = [edge for edge in self.graph[From] if edge[0] != To]
-            self.E_count -= 1
+            self.E_count -= original_length - len(self.graph[From])
+
             if not self.directed:
+                original_length = len(self.graph[To])
                 self.graph[To] = [edge for edge in self.graph[To] if edge[0] != From]
+                self.E_count -= original_length - len(self.graph[To])
         else:
             # Multi-graph case
-            self.graph[From].remove((To, weight))
-            self.E_count -= 1
-            if not self.directed:
+            if (To, weight) in self.graph[From]:
+                self.graph[From].remove((To, weight))
+                self.E_count -= 1
+
+            if not self.directed and (From, weight) in self.graph[To]:
                 self.graph[To].remove((From, weight))
+                self.E_count -= 1
 
     def print_graph(self):
-        for i in range(self.V_count):
-            print(i, ":", self.graph[i])
+        for key, value in self.graph.items():
+            print(key, ":", value)
 
     def get_edge_list(self):
         edges = []
-        for i in range(self.V_count):
-            for j in self.graph[i]:
-                if (j, i) in edges or (i, j) in edges and not self.directed:
-                    continue
-                edges.append((i, j[0], j[1]))
+        for key in self.graph:
+            for to, weight in self.graph[key]:
+                if self.directed or (to, key, weight) not in edges:
+                    edges.append((key, to, weight))
         return edges
 
     def show(self, filename="network.html"):
         net = Network(directed=self.directed)
 
         # add nodes
-        for i in range(self.V_count):
-            net.add_node(i, label=f"Node {i}")
+        for v in self.V:
+            net.add_node(v, label=f"Node {v}")
 
         # add edges
-        for i in self.get_edge_list():
-            net.add_edge(i[0], i[1], value=i[2])
+        for From, To, weight in self.get_edge_list():
+            net.add_edge(From, To, value=weight)
 
         net.show(filename, notebook=False)
 
@@ -68,8 +89,8 @@ class GraphList:
         # return the indegree of a node if the graph is directed
         if self.directed:
             indegree = 0
-            for i in range(self.V_count):
-                for edge in self.graph[i]:
+            for v in self.graph:
+                for edge in self.graph[v]:
                     if edge[0] == node:
                         indegree += 1
             return indegree
@@ -92,22 +113,19 @@ class GraphList:
         return sorted(degree_sequence, reverse=True)
 
     def is_subgraph_of(self, graph):
-        # use bfs to check if the graph is a subgraph of another graph
-        # get a graph by deleting a random node from the graph
-        # if the graph is isomorphic to the original graph, return True
-        # else, continue the process until the graph is isomorphic or all nodes are deleted
-        def bfs_util(queue, visited, graph):
-            pass
-
-        visited = set()
+        # use BFS
+        # choose a random node from the graph
+        # check if the graph is a subgraph of the other graph
+        # if yes return True,
+        # else, add the next node to the queue
 
         pass
 
     def get_weight_sum(self):
         # return the sum of all edge weights in the graph
         weight_sum = 0
-        for i in range(self.V_count):
-            for edge in self.graph[i]:
+        for node in self.graph:
+            for edge in self.graph[node]:
                 weight_sum += edge[1]
         if not self.directed:
             weight_sum /= 2
@@ -116,14 +134,18 @@ class GraphList:
 
     def optimal_spanning_tree(self, maximize=False):
         # Kuruskal's algorithm
-        # source: https://www.youtube.com/watch?v=_UH0H4r7N7E&t=25s
-        result = GraphList(self.V_count, directed=self.directed)
+        # concept source: https://www.youtube.com/watch?v=_UH0H4r7N7E&t=25s
+
+        # greedy algorithm
+        # starting from the edge with the smallest/maximum weight
+        # add the edge one by one to the tree
+        result = GraphList(self.V, directed=self.directed)
         edges = self.get_edge_list()
         edges.sort(key=lambda x: x[2], reverse=maximize)
 
         # problem:
         # because it only checked if the nodes are visited or not,
-        # this implementation may result in separate trees
+        # this implementation may result in separated trees
         #
         # visited = set()
         # for edge in edges:
@@ -145,7 +167,8 @@ class GraphList:
             if parent[i] == i:
                 return i
             else:
-                return find(parent, parent[i])
+                parent[i] = find(parent, parent[i])
+                return parent[i]
 
         def union(parent, rank, x, y):
 
@@ -167,12 +190,8 @@ class GraphList:
                 parent[root_y] = root_x
                 rank[root_x] += 1
 
-        parent = [] # used to keep track of the parent of each node
-        rank = [] # used to keep track of the depth of each subtree rooted at each node
-
-        for node in range(self.V_count):
-            parent.append(node) # iitially, each node is its own parent
-            rank.append(0) # initally , each subtree has a depth of 0
+        parent = {node: node for node in self.V}
+        rank = {node: 0 for node in self.V}
 
         for edge in edges:
             u, v, w = edge
@@ -182,7 +201,7 @@ class GraphList:
             if root_u != root_v:
                 result.add_edge(From=u, To=v, weight=w)
                 union(parent, rank, root_u, root_v)
-                
+
             # after the tree is found, root_u and root_v will be the same
 
         return result
@@ -215,7 +234,7 @@ class GraphList:
             if n >= len(sequence):
                 return False
 
-            # remove the next n elements
+            # subtract 1 from the next n elements
             for i in range(n):
                 sequence[i] -= 1
                 if sequence[i] < 0:
