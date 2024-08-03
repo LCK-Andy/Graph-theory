@@ -107,7 +107,7 @@ class GraphList:
     def get_degree_sequence(self):
         # return the degree sequence of the graph
         degree_sequence = []
-        for i in range(self.V_count):
+        for i in self.V:
             degree_sequence.append(self.get_node_degree(i))
 
         return sorted(degree_sequence, reverse=True)

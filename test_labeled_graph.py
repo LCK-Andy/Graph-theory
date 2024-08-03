@@ -15,6 +15,8 @@ g.add_edge("B", "E", 1)
 g.add_edge("C", "E", 2)
 g.add_edge("D", "G", 9)
 
-g.show("graph.html")
-g.optimal_spanning_tree(maximize=False).show("mst.html")
-print(g.optimal_spanning_tree(maximize=False).get_weight_sum())
+# g.show("graph.html")
+# g.optimal_spanning_tree(maximize=False).show("mst.html")
+# print(g.optimal_spanning_tree(maximize=False).get_weight_sum())
+
+print(g.get_degree_sequence())
