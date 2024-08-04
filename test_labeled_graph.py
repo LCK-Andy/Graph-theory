@@ -19,4 +19,4 @@ g.add_edge("D", "G", 9)
 # g.optimal_spanning_tree(maximize=False).show("mst.html")
 # print(g.optimal_spanning_tree(maximize=False).get_weight_sum())
 
-print(g.get_degree_sequence())
+print(g.is_connected())

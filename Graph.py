@@ -53,6 +53,16 @@ class GraphList:
                 self.graph[To].remove((From, weight))
                 self.E_count -= 1
 
+    def remove_node(self, node):
+        if node not in self.V:
+            raise ValueError("The node must be in the graph")
+
+        for key in self.graph:
+            self.graph[key] = [edge for edge in self.graph[key] if edge[0] != node]
+
+        self.graph.pop(node)
+        self.V.remove(node)
+        
     def print_graph(self):
         for key, value in self.graph.items():
             print(key, ":", value)
@@ -206,6 +216,14 @@ class GraphList:
 
         return result
 
+    def find_trail(self, start):
+        # find a trail from start to end
+        # a trail is a path that visits every edge exactly once
+        # if there is no such trail, return None
+        # suggestion: use DFS
+
+        return None
+
     @staticmethod
     def is_graphical(sequence: list, mutiple_edges=False):
         sequence = sequence.copy()
@@ -242,6 +260,67 @@ class GraphList:
 
             # sort the sequence in descending order
             sequence.sort(reverse=True)
+
+    def is_connected(self):
+        # check if the graph is connected
+        # suggestion: use DFS
+        visited = {node: False for node in self.V}
+        # print(visited)
+        def DFS(v):
+            visited[v] = True
+            # print(self.graph[v])
+            for neightbor, weight in self.graph[v]:
+                if not visited[neightbor]:
+                    DFS(neightbor)
+        DFS(self.V[0]) # traverse the graph from the first node
+        
+        for node in visited:
+            if not visited[node]:
+                return False
+        else:
+            return True
+        
+    def get_component_from_node(self, node):
+        # return the component of the graph that contains the given node
+        def find(parent, i):
+            """
+            the "find" function of the union-find algorithm
+
+            source: https://www.youtube.com/watch?v=ayW5B2W9hfo
+            """
+
+            if parent[i] == i:
+                return i
+            else:
+                parent[i] = find(parent, parent[i])
+                return parent[i]
+
+        def union(parent, rank, x, y):
+
+            """
+            the "union" function of the union-find algorithm
+
+            source: https://www.youtube.com/watch?v=ayW5B2W9hfo
+            """
+            root_x = find(parent, x)
+            root_y = find(parent, y)
+
+            # When two sets are merged, the root of the tree with a smaller
+            # rank is made a child of the root of the tree with a larger rank.
+            if rank[root_x] < rank[root_y]:
+                parent[root_x] = root_y
+            elif rank[root_x] > rank[root_y]:
+                parent[root_y] = root_x
+            else:
+                parent[root_y] = root_x
+                rank[root_x] += 1
+
+        parent = {node: node for node in self.V}
+        rank = {node: 0 for node in self.V}
+        
+        
+        pass
+       
 
 
 def is_isomorphic(graph1: GraphList, graph2: GraphList):
