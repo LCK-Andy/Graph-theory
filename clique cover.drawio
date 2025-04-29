@@ -1,9 +1,39 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3.1 Safari/605.1.15" version="26.2.14">
   <diagram name="第 1 页" id="Xnl-DaeFZKARdJeWeRKi">
-    <mxGraphModel>
+    <mxGraphModel dx="864" dy="1068" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-1" value="(x1 or not x2 or x3) and (x1 or x2 or not x3)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="31" y="-30" width="322" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-8" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;endArrow=none;startFill=0;" edge="1" parent="1" source="JnVY9v9r0ZKr1ooGh_Sn-2" target="JnVY9v9r0ZKr1ooGh_Sn-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-2" value="x1" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-60" y="52" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-3" value="not x1" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="81" y="52" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-10" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;endArrow=none;startFill=0;" edge="1" parent="1" source="JnVY9v9r0ZKr1ooGh_Sn-4" target="JnVY9v9r0ZKr1ooGh_Sn-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-4" value="x3" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-69" y="308" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-5" value="not x3" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="72" y="308" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-9" style="edgeStyle=none;curved=1;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;endArrow=none;startFill=0;" edge="1" parent="1" source="JnVY9v9r0ZKr1ooGh_Sn-6" target="JnVY9v9r0ZKr1ooGh_Sn-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-6" value="x2" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-65" y="181" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JnVY9v9r0ZKr1ooGh_Sn-7" value="not x2" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="76" y="181" width="80" height="80" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
